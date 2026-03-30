@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const usersMock = require('../services/mockUsers');
+const usersMock = require('../models/mockUsers');
 
 const JWT_SECRET = 'gymmanager_super_secreto_2026'; 
 
