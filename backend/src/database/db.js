@@ -4,8 +4,8 @@ const { Pool } = require("pg");
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
-  database: "gymmanager_db",
-  password: "admin123",
+  database: "gymmanager_db", //criar um database com esse nome
+  password: "Admin", //usar sua senha
   port: 5432,
 });
 
