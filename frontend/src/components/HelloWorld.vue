@@ -1,93 +1,67 @@
 <script setup>
 import { ref } from 'vue'
-import viteLogo from '../assets/vite.svg'
-import heroImg from '../assets/hero.png'
-import vueLogo from '../assets/vue.svg'
 
-const count = ref(0)
+const nome = ref('')
+const email = ref('')
+const senha = ref('')
+const mensagem = ref('')
+const erro = ref('')
+
+const registrarAluno = async () => {
+  erro.value = ''
+  mensagem.value = ''
+
+  if (!nome.value || !email.value || !senha.value) {
+    erro.value = 'Preencha todos os campos.'
+    return
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/api/alunos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: nome.value, email: email.value, senha: senha.value })
+    })
+
+    const data = await response.json()
+    if (!response.ok) {
+      throw new Error(data.erro || 'Erro ao cadastrar aluno')
+    }
+
+    mensagem.value = `Aluno ${data.aluno.nome} cadastrado com sucesso!`;
+    nome.value = ''
+    email.value = ''
+    senha.value = ''
+  } catch (e) {
+    erro.value = e.message
+  }
+}
 </script>
 
 <template>
-  <section id="center">
-    <div class="hero">
-      <img :src="heroImg" class="base" width="170" height="179" alt="" />
-      <img :src="vueLogo" class="framework" alt="Vue logo" />
-      <img :src="viteLogo" class="vite" alt="Vite logo" />
-    </div>
-    <div>
-      <h1>Get started</h1>
-      <p>Edit <code>src/App.vue</code> and save to test <code>HMR</code></p>
-    </div>
-    <button class="counter" @click="count++">Count is {{ count }}</button>
+  <section>
+    <h1>Cadastro de Aluno</h1>
+    <form @submit.prevent="registrarAluno">
+      <div>
+        <label for="nome">Nome</label><br />
+        <input id="nome" v-model="nome" type="text" placeholder="Nome completo" required />
+      </div>
+
+      <div>
+        <label for="email">E-mail</label><br />
+        <input id="email" v-model="email" type="email" placeholder="email@exemplo.com" required />
+      </div>
+
+      <div>
+        <label for="senha">Senha</label><br />
+        <input id="senha" v-model="senha" type="password" placeholder="Senha" required />
+      </div>
+
+      <button type="submit">Cadastrar Aluno</button>
+    </form>
+
+    <div v-if="mensagem" style="margin-top: 1rem; color: #0a0;">{{ mensagem }}</div>
+    <div v-if="erro" style="margin-top: 1rem; color: #a00;">{{ erro }}</div>
   </section>
-
-  <div class="ticks"></div>
-
-  <section id="next-steps">
-    <div id="docs">
-      <svg class="icon" role="presentation" aria-hidden="true">
-        <use href="/icons.svg#documentation-icon"></use>
-      </svg>
-      <h2>Documentation</h2>
-      <p>Your questions, answered</p>
-      <ul>
-        <li>
-          <a href="https://vite.dev/" target="_blank">
-            <img class="logo" :src="viteLogo" alt="" />
-            Explore Vite
-          </a>
-        </li>
-        <li>
-          <a href="https://vuejs.org/" target="_blank">
-            <img class="button-icon" :src="vueLogo" alt="" />
-            Learn more
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div id="social">
-      <svg class="icon" role="presentation" aria-hidden="true">
-        <use href="/icons.svg#social-icon"></use>
-      </svg>
-      <h2>Connect with us</h2>
-      <p>Join the Vite community</p>
-      <ul>
-        <li>
-          <a href="https://github.com/vitejs/vite" target="_blank">
-            <svg class="button-icon" role="presentation" aria-hidden="true">
-              <use href="/icons.svg#github-icon"></use>
-            </svg>
-            GitHub
-          </a>
-        </li>
-        <li>
-          <a href="https://chat.vite.dev/" target="_blank">
-            <svg class="button-icon" role="presentation" aria-hidden="true">
-              <use href="/icons.svg#discord-icon"></use>
-            </svg>
-            Discord
-          </a>
-        </li>
-        <li>
-          <a href="https://x.com/vite_js" target="_blank">
-            <svg class="button-icon" role="presentation" aria-hidden="true">
-              <use href="/icons.svg#x-icon"></use>
-            </svg>
-            X.com
-          </a>
-        </li>
-        <li>
-          <a href="https://bsky.app/profile/vite.dev" target="_blank">
-            <svg class="button-icon" role="presentation" aria-hidden="true">
-              <use href="/icons.svg#bluesky-icon"></use>
-            </svg>
-            Bluesky
-          </a>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <div class="ticks"></div>
-  <section id="spacer"></section>
 </template>
+

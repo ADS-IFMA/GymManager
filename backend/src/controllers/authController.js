@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const usersMock = require('../models/mockUsers');
+const pool = require('../database/db');
+const Usuario = require('../models/usuario.js');
 
 const JWT_SECRET = 'gymmanager_super_secreto_2026'; 
 
@@ -12,14 +13,30 @@ const login = async (req, res) => {
       return res.status(400).json({ erro: 'E-mail e senha são obrigatórios.' });
     }
 
-    const user = usersMock.find(u => u.email === email);
-    
-    if (!user) {
+    const query = 'SELECT id, nome, email, senha, perfil, ativo FROM usuarios WHERE email = $1';
+    const result = await pool.query(query, [email]);
+
+    if (result.rowCount === 0) {
       return res.status(401).json({ erro: 'Credenciais inválidas.' });
     }
 
-    const senhaValida = await bcrypt.compare(senha, user.senhaHash);
-    
+    const userData = result.rows[0];
+
+    if (!userData.ativo) {
+      return res.status(401).json({ erro: 'Usuário inativo.' });
+    }
+
+    const user = new Usuario({
+      id: userData.id,
+      nome: userData.nome,
+      email: userData.email,
+      senha: userData.senha,
+      perfil: userData.perfil,
+      ativo: userData.ativo,
+    });
+
+    const senhaValida = await bcrypt.compare(senha, user.senha);
+
     if (!senhaValida) {
       return res.status(401).json({ erro: 'Credenciais inválidas.' });
     }
