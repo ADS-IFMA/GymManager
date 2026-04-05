@@ -1,21 +1,20 @@
-const { Pool } = require("pg");
+import pkg from 'pg'; 
+const { Pool } = pkg; 
 
-// Configurações extraídas do seu ambiente local
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
-  database: "gymmanager_db", //criar um database com esse nome
-  password: "Admin", //usar sua senha
+  database: "gymmanager_db",
+  password: "Admin",
   port: 5432,
 });
 
-// Teste de conexão imediato
 pool.query("SELECT NOW()", (err, res) => {
   if (err) {
-    console.error(" Erro ao conectar ao PostgreSQL:", err.stack);
+    console.error("❌ Erro ao conectar ao PostgreSQL:", err.stack);
   } else {
-    console.log(" Conectado ao PostgreSQL com sucesso em:", res.rows[0].now);
+    console.log("✅ Conectado ao PostgreSQL com sucesso!");
   }
 });
 
-module.exports = pool;
+export default pool; 

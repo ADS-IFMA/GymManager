@@ -1,19 +1,25 @@
-/**
- * Entidade Usuário - GymManager
- * Representa o modelo de dados para autenticação e perfis.
- */
+import db from '../database/db.js'; 
+
 class Usuario {
   constructor({ id, nome, email, senha, perfil, ativo, criado_at }) {
     this.id = id;
     this.nome = nome;
     this.email = email;
-    this.senha = senha; // Hash da senha
-    this.perfil = perfil; // ADMIN, PROFISSIONAL ou ALUNO
-    this.ativo = ativo || true;
+    this.senha = senha; 
+    this.perfil = perfil; 
+    this.ativo = ativo !== undefined ? ativo : true;
     this.criado_at = criado_at;
   }
 
-  // Método simples para retornar dados sem a senha (segurança)
+  static async buscarPorEmail(email) {
+    const query = 'SELECT * FROM usuarios WHERE email = $1';
+    const resultado = await db.query(query, [email]);
+    if (resultado.rows.length > 0) {
+      return new Usuario(resultado.rows[0]);
+    }
+    return null;
+  }
+
   toJSON() {
     return {
       id: this.id,
@@ -25,4 +31,4 @@ class Usuario {
   }
 }
 
-module.exports = Usuario;
+export default Usuario; 
