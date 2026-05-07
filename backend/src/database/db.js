@@ -1,15 +1,16 @@
-const { Pool } = require("pg");
+import pkg from "pg";
+const { Pool } = pkg;
 
-// Configurações extraídas do seu ambiente local
+// Configurações para o notebook do seu amigo
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
-  database: "gymmanager_db", //criar um database com esse nome
-  password: "Admin", //usar sua senha
+  database: "gymmanager_db",
+  password: "admin123", // Senha que o Tauan definiu no Merge
   port: 5432,
 });
 
-// Teste de conexão imediato
+// Teste de conexão (O que você está tentando rodar)
 pool.query("SELECT NOW()", (err, res) => {
   if (err) {
     console.error(" Erro ao conectar ao PostgreSQL:", err.stack);
@@ -18,4 +19,4 @@ pool.query("SELECT NOW()", (err, res) => {
   }
 });
 
-module.exports = pool;
+export default pool;

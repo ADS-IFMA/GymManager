@@ -1,28 +1,36 @@
-/**
- * Entidade Usuário - GymManager
- * Representa o modelo de dados para autenticação e perfis.
- */
+import pool from "../database/db.js";
+
 class Usuario {
-  constructor({ id, nome, email, senha, perfil, ativo, criado_at }) {
-    this.id = id;
-    this.nome = nome;
-    this.email = email;
-    this.senha = senha; // Hash da senha
-    this.perfil = perfil; // ADMIN, PROFISSIONAL ou ALUNO
-    this.ativo = ativo || true;
-    this.criado_at = criado_at;
+  // Método para criar um novo usuário no banco
+  static async create({
+    nome,
+    email,
+    senha,
+    tipo_usuario,
+    data_nasc,
+    telefone,
+  }) {
+    const query = `
+      INSERT INTO usuarios (nome, email, senha, tipo_usuario, data_nasc, telefone)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING id, nome, email, tipo_usuario, criado_at;
+    `;
+    const values = [nome, email, senha, tipo_usuario, data_nasc, telefone];
+
+    try {
+      const { rows } = await pool.query(query, values);
+      return rows[0];
+    } catch (error) {
+      throw error;
+    }
   }
 
-  // Método simples para retornar dados sem a senha (segurança)
-  toJSON() {
-    return {
-      id: this.id,
-      nome: this.nome,
-      email: this.email,
-      perfil: this.perfil,
-      ativo: this.ativo,
-    };
+  // Método para buscar usuário por e-mail (importante para o Login/Red Team)
+  static async findByEmail(email) {
+    const query = "SELECT * FROM usuarios WHERE email = $1";
+    const { rows } = await pool.query(query, [email]);
+    return rows[0];
   }
 }
 
-module.exports = Usuario;
+export default Usuario;
