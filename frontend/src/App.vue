@@ -1,7 +1,8 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import AlunoCadastro from './views/AlunoCadastro.vue';
 </script>
 
 <template>
-  <HelloWorld />
+  <AlunoCadastro />
 </template>
+
