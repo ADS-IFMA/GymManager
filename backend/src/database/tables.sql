@@ -89,8 +89,9 @@ CREATE TABLE IF NOT EXISTS checkins (
 -- 8. Tabela de Mensalidades
 CREATE TABLE IF NOT EXISTS mensalidades (
     id SERIAL PRIMARY KEY,
-    id_aluno INTEGER REFERENCES alunos(id_usuario),
-    valor DECIMAL(10,2) NOT NULL,
-    data_vesc DATE NOT NULL,
-    status_pagamento BOOLEAN DEFAULT FALSE
+    aluno_id INTEGER REFERENCES usuarios(id),
+    valor NUMERIC(10,2) NOT NULL,
+    data_vencimento DATE NOT NULL,
+    data_pagamento DATE,
+    status VARCHAR(10) NOT NULL CHECK (status IN ('PAGO', 'PENDENTE', 'VENCIDO'))
 );
