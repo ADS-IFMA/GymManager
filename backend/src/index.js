@@ -4,6 +4,7 @@ import './database/db.js';
 import authRoutes from './routes/authRoutes.js';
 import alunoRoutes from './routes/alunoRoutes.js';
 import profissionalRoutes from './routes/profissionalRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use('/api', authRoutes);
 app.use('/api', alunoRoutes);
 app.use('/api', profissionalRoutes);
+app.use('/api', dashboardRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
