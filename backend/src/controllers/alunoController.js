@@ -9,3 +9,13 @@ export const cadastrarAluno = async (req, res) => {
     res.status(400).json({ erro: error.message });
   }
 };
+
+export const listarAlunos = async (req, res) => {
+  try {
+    const alunos = await alunoService.listar();
+    res.json(alunos);
+  } catch (error) {
+    console.error('Erro ao listar alunos:', error.message);
+    res.status(400).json({ erro: error.message });
+  }
+};
