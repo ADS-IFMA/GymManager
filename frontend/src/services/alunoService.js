@@ -17,3 +17,18 @@ export async function cadastrarAluno({ nome, email, senha }) {
 
   return data;
 }
+
+/**
+ * Lista todos os alunos cadastrados no sistema.
+ */
+export async function listarAlunos() {
+  const response = await fetch(`${API_BASE}/alunos`);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.erro || 'Erro ao listar alunos.');
+  }
+
+  return data;
+}

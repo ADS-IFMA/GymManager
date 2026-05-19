@@ -6,7 +6,7 @@ const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "gymmanager_db",
-  password: "admin123", // Senha que o Tauan definiu no Merge
+  password: "admin123", // A senha que você definiu no Passo 4
   port: 5432,
 });
 
