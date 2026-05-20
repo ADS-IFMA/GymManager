@@ -8,4 +8,3 @@ import DashboardView from './views/DashboardView.vue'
   
   <DashboardView />
 </template>
-
