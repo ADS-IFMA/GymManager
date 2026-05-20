@@ -4,9 +4,9 @@ import Usuario from "../models/Usuario.js";
 
 class AuthService {
   async autenticar(email, senha) {
-    // 1. Ajustado para o nome correto do método no Model (findByEmail)
+    // 1. Ajustado para o nome correto do método no Model (buscarPorEmail)
     // Usamos o trim() e o toLowerCase() para evitar erros se o usuário digitar espaços ou maiúsculas
-    const usuario = await Usuario.findByEmail(email.trim().toLowerCase());
+    const usuario = await Usuario.buscarPorEmail(email.trim().toLowerCase());
 
     if (!usuario) {
       console.log(

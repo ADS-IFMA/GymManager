@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { loginAPI } from "../services/authService.js";
+import { loginAPI, armazenarAuthData } from "../services/authService.js";
 
 const router = useRouter();
 
@@ -21,9 +21,8 @@ const handleLogin = async () => {
       senha: senha.value,
     });
 
-    // Armazenar o token no localStorage
-    localStorage.setItem("authToken", response.token);
-    localStorage.setItem("usuario", JSON.stringify(response.usuario));
+    // Armazenar o token no localStorage usando a mesma chave que o guard de rota espera
+    armazenarAuthData(response.token, response.usuario);
 
     // Redirecionar para o dashboard
     router.push("/dashboard");
