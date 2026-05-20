@@ -35,22 +35,19 @@ class AuthService {
       `[AuthService] Usuário autenticado com sucesso: ${usuario.nome}`,
     );
 
-    // 3. Substituído 'perfil' por 'tipo_usuario' para bater com o banco de dados
     const token = jwt.sign(
-      { id: usuario.id, tipo_usuario: usuario.tipo_usuario },
+      { id: usuario.id, tipo_usuario: usuario.perfil },
       "gymmanager_secret_2026",
       { expiresIn: "8h" },
     );
 
-    // Se o método toJSON() der erro na apresentação por não estar mapeado,
-    // você pode retornar apenas o objeto puro: usuario
     return {
       token,
       usuario: {
         id: usuario.id,
         nome: usuario.nome,
         email: usuario.email,
-        tipo_usuario: usuario.tipo_usuario,
+        tipo_usuario: usuario.perfil,
       },
     };
   }
