@@ -69,6 +69,19 @@ class ProfissionalService {
       client.release();
     }
   }
+
+ async listar() {
+  const query = `
+    SELECT *
+    FROM usuarios
+    WHERE perfil = 'PROFISSIONAL'
+  `
+
+  const resultado = await db.query(query)
+
+  return resultado.rows
+}
+
 }
 
 export default new ProfissionalService();

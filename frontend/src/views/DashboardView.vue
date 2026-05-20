@@ -1,196 +1,417 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { getUsuario, logout } from "../services/authService.js";
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
-const router = useRouter();
-const usuario = ref(null);
+import {
+  Dumbbell,
+  LayoutGrid,
+  Users,
+  GraduationCap,
+  CalendarDays,
+  LineChart,
+  CreditCard,
+  UserCheck,
+  LogOut
+} from 'lucide-vue-next'
+
+// Dados temporários
+const totalAlunos = ref(0)
+const totalProfissionais = ref(0)
+const mensalidadesPendentes = ref(0)
+
+const carregarDashboard = async () => {
+  try {
+
+    const respostaAlunos = await axios.get(
+      'http://localhost:3000/api/alunos'
+    )
+
+    totalAlunos.value = respostaAlunos.data.length
+
+    const respostaProfissionais = await axios.get(
+      'http://localhost:3000/api/profissionais'
+    )
+
+    totalProfissionais.value =
+      respostaProfissionais.data.length
+
+  } catch (error) {
+    console.error('Erro ao carregar dashboard:', error)
+  }
+
+}
 
 onMounted(() => {
-  const usuarioData = getUsuario();
-  if (usuarioData) {
-    usuario.value = usuarioData;
-  }
-});
+  carregarDashboard()
+})
 
-const handleLogout = () => {
-  logout();
-  router.push("/login");
-};
+
 </script>
 
 <template>
-  <div class="dashboard-container">
-    <nav class="navbar">
-      <div class="navbar-content">
-        <h2 class="logo">GymManager</h2>
-        <div class="user-section">
-          <span v-if="usuario" class="user-name">{{ usuario.nome }}</span>
-          <button @click="handleLogout" class="btn-logout">Sair</button>
-        </div>
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <div class="brand">
+        <Dumbbell :size="28" />
+        <span>GymManager</span>
       </div>
-    </nav>
 
-    <main class="dashboard-main">
-      <section class="welcome-section">
-        <h1>Bem-vindo ao Dashboard</h1>
-        <p v-if="usuario">
-          Olá, <strong>{{ usuario.nome }}</strong
-          >! Bem-vindo ao GymManager.
-        </p>
+      <nav class="menu">
 
-        <div class="dashboard-grid">
-          <router-link to="/alunos" class="dashboard-card">
-            <div class="card-icon">👥</div>
-            <h3>Alunos</h3>
-            <p>Gerenciar alunos e cadastros</p>
-          </router-link>
+        <a href="#" class="menu-item active">
+          <LayoutGrid :size="18" />
+          Dashboard
+        </a>
 
-          <router-link to="/profissionais" class="dashboard-card">
-            <div class="card-icon">💼</div>
-            <h3>Profissionais</h3>
-            <p>Gerenciar profissionais da academia</p>
-          </router-link>
+        <a href="#" class="menu-item">
+          <Users :size="18" />
+          Alunos
+        </a>
+
+        <a href="#" class="menu-item">
+          <GraduationCap :size="18" />
+          Profissionais
+        </a>
+
+        <a href="#" class="menu-item">
+          <CalendarDays :size="18" />
+          Agendamentos
+        </a>
+
+        <a href="#" class="menu-item">
+          <LineChart :size="18" />
+          Avaliações
+        </a>
+
+        <a href="#" class="menu-item">
+          <CreditCard :size="18" />
+          Mensalidades
+        </a>
+
+        <a href="#" class="menu-item">
+          <UserCheck :size="18" />
+          Check-in
+        </a>
+
+      </nav>
+
+      <button class="logout-btn">
+        <LogOut :size="18" />
+        Sair
+      </button>
+
+    </aside>
+
+    <!-- Conteúdo -->
+    <main class="content">
+
+      <header class="content-header">
+        <h1>Dashboard</h1>
+        <p>Visão geral da academia</p>
+      </header>
+
+      <!-- Cards -->
+      <section class="metrics-grid">
+
+        <div class="metric-card">
+
+          <div>
+            <span class="label">
+              Total de Alunos
+            </span>
+
+            <h2>{{ totalAlunos }}</h2>
+          </div>
+
+          <div class="metric-icon blue">
+            <Users :size="28" />
+          </div>
+
         </div>
+
+        <div class="metric-card">
+
+          <div>
+            <span class="label">
+              Profissionais
+            </span>
+
+            <h2>{{ totalProfissionais }}</h2>
+          </div>
+
+          <div class="metric-icon green">
+            <GraduationCap :size="28" />
+          </div>
+
+        </div>
+
+        <div class="metric-card">
+
+          <div>
+            <span class="label">
+              Mensalidades Pendentes
+            </span>
+
+            <h2>{{ mensalidadesPendentes }}</h2>
+          </div>
+
+          <div class="metric-icon red">
+            <CreditCard :size="28" />
+          </div>
+
+        </div>
+
       </section>
+
+      <!-- Tabela -->
+      <section class="table-section">
+
+        <div class="table-header">
+          <h2>Últimos alunos cadastrados</h2>
+        </div>
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Plano</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr
+              v-for="aluno in alunosRecentes"
+              :key="aluno.id"
+            >
+              <td>{{ aluno.nome }}</td>
+
+              <td>{{ aluno.plano }}</td>
+
+              <td>
+                <span
+                  :class="[
+                    'badge',
+                    aluno.status === 'Ativo'
+                      ? 'badge-success'
+                      : 'badge-warning'
+                  ]"
+                >
+                  {{ aluno.status }}
+                </span>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </section>
+
     </main>
+
   </div>
 </template>
 
 <style scoped>
-.dashboard-container {
+
+.dashboard-layout {
+  display: flex;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  background: #f8fafc;
+  font-family: 'Inter', sans-serif;
 }
 
-.navbar {
-  background: linear-gradient(135deg, #0c4a6e 0%, #1e3a8a 100%);
-  padding: 16px 32px;
-  color: #f8fafc;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+/* SIDEBAR */
+
+.sidebar {
+  width: 260px;
+  background: white;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
 }
 
-.navbar-content {
-  max-width: 1200px;
-  margin: 0 auto;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px;
+  margin-bottom: 40px;
+  color: #2563eb;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 500;
+  border-left: 4px solid transparent;
+  transition: 0.2s;
+}
+
+.menu-item:hover {
+  background: #f1f5f9;
+}
+
+.menu-item.active {
+  background: #eff6ff;
+  color: #2563eb;
+  border-left-color: #2563eb;
+}
+
+.logout-btn {
+  margin: 24px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #ef4444;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* CONTENT */
+
+.content {
+  flex: 1;
+  padding: 40px;
+}
+
+.content-header h1 {
+  font-size: 2rem;
+  color: #0f172a;
+}
+
+.content-header p {
+  color: #64748b;
+  margin-top: 5px;
+}
+
+/* CARDS */
+
+.metrics-grid {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.metric-card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #60a5fa;
-}
-
-.user-section {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.user-name {
-  font-size: 0.95rem;
-}
-
-.btn-logout {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  background: #ef4444;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.btn-logout:hover {
-  background: #dc2626;
-}
-
-.dashboard-main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 16px;
-}
-
-.welcome-section {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.welcome-section h1 {
-  margin-bottom: 8px;
-  color: #1f2937;
+.metric-card h2 {
+  margin-top: 10px;
   font-size: 2rem;
+  color: #0f172a;
 }
 
-.welcome-section > p {
-  margin-bottom: 32px;
-  color: #6b7280;
-  font-size: 1.05rem;
+.label {
+  color: #64748b;
+  font-size: 0.9rem;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 24px;
-}
-
-.dashboard-card {
+.metric-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+.blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.red {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* TABLE */
+
+.table-section {
+  margin-top: 36px;
+  background: white;
+  border-radius: 18px;
   padding: 24px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-  border-radius: 12px;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  border: 1px solid #e2e8f0;
 }
 
-.dashboard-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+.table-header {
+  margin-bottom: 20px;
 }
 
-.card-icon {
-  font-size: 3rem;
-  margin-bottom: 12px;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.dashboard-card h3 {
-  margin-bottom: 8px;
-  font-size: 1.25rem;
+th {
+  text-align: left;
+  padding: 14px;
+  background: #f8fafc;
+  color: #475569;
+}
+
+td {
+  padding: 14px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
   font-weight: 700;
 }
 
-.dashboard-card p {
-  text-align: center;
-  font-size: 0.9rem;
-  opacity: 0.9;
+.badge-success {
+  background: #dcfce7;
+  color: #16a34a;
 }
 
-@media (max-width: 768px) {
-  .navbar-content {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .welcome-section {
-    padding: 20px;
-  }
-
-  .welcome-section h1 {
-    font-size: 1.5rem;
-  }
+.badge-warning {
+  background: #fef3c7;
+  color: #ca8a04;
 }
+
+:global(#app) {
+  width: 100%;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 </style>
