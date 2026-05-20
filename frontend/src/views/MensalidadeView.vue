@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { atualizarStatusMensalidade, getMensalidadesPorAluno } from '../services/mensalidadeService.js';
 import { listarAlunos } from '../services/alunoService.js';
 import { Dumbbell, LayoutGrid, Users, GraduationCap, CalendarDays, LineChart, CreditCard, UserCheck, LogOut } from 'lucide-vue-next';
@@ -15,6 +16,8 @@ const carregandoId = ref(null);
 
 const toast = ref({ exibir: false, mensagem: '', tipo: 'success' });
 let toastTimer = null;
+
+const route = useRoute();
 
 const exibirToast = (mensagem, tipo = 'success') => {
   if (toastTimer) clearTimeout(toastTimer);
@@ -176,12 +179,12 @@ const labelStatus = (status) => {
       </div>
 
       <nav class="menu">
-        <a href="#" class="menu-item"><LayoutGrid :size="18" /> Dashboard</a>
-        <a href="#" class="menu-item"><Users :size="18" /> Alunos</a>
-        <a href="#" class="menu-item"><GraduationCap :size="18" /> Profissionais</a>
+        <router-link to="/dashboard" class="menu-item" :class="{ active: route.path === '/dashboard' }"><LayoutGrid :size="18" /> Dashboard</router-link>
+        <router-link to="/alunos" class="menu-item" :class="{ active: route.path.startsWith('/alunos') }"><Users :size="18" /> Alunos</router-link>
+        <router-link to="/profissionais/cadastro" class="menu-item" :class="{ active: route.path.startsWith('/profissionais') }"><GraduationCap :size="18" /> Profissionais</router-link>
         <a href="#" class="menu-item"><CalendarDays :size="18" /> Agendamentos</a>
         <a href="#" class="menu-item"><LineChart :size="18" /> Avaliações Físicas</a>
-        <a href="#" class="menu-item active"><CreditCard :size="18" /> Mensalidades</a>
+        <router-link to="/mensalidades" class="menu-item" :class="{ active: route.path.startsWith('/mensalidades') }"><CreditCard :size="18" /> Mensalidades</router-link>
         <a href="#" class="menu-item"><UserCheck :size="18" /> Check-in</a>
       </nav>
 

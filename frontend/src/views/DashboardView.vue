@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useRouter, useRoute } from 'vue-router'
 
 import {
   Dumbbell,
@@ -14,37 +15,40 @@ import {
   LogOut
 } from 'lucide-vue-next'
 
-// Dados temporários
+const router = useRouter()
+const route = useRoute()
+
+// Dados do dashboard
 const totalAlunos = ref(0)
 const totalProfissionais = ref(0)
 const mensalidadesPendentes = ref(0)
+const alunosRecentes = ref([])
 
 const carregarDashboard = async () => {
   try {
-
-    const respostaAlunos = await axios.get(
-      'http://localhost:3000/api/alunos'
-    )
-
+    const respostaAlunos = await axios.get('http://localhost:3000/api/alunos')
     totalAlunos.value = respostaAlunos.data.length
+    alunosRecentes.value = respostaAlunos.data.slice(-5).reverse()
 
-    const respostaProfissionais = await axios.get(
-      'http://localhost:3000/api/profissionais'
-    )
+    const respostaProfissionais = await axios.get('http://localhost:3000/api/profissionais')
+    totalProfissionais.value = respostaProfissionais.data.length
 
-    totalProfissionais.value =
-      respostaProfissionais.data.length
-
+    const respostaMensalidades = await axios.get('http://localhost:3000/api/mensalidades')
+    mensalidadesPendentes.value = respostaMensalidades.data.filter(m => m.paga === false).length
   } catch (error) {
     console.error('Erro ao carregar dashboard:', error)
   }
+}
 
+const logout = () => {
+  localStorage.removeItem('token')
+  localStorage.removeItem('usuario')
+  router.push('/login')
 }
 
 onMounted(() => {
   carregarDashboard()
 })
-
 
 </script>
 
@@ -61,20 +65,20 @@ onMounted(() => {
 
       <nav class="menu">
 
-        <a href="#" class="menu-item active">
+        <router-link to="/dashboard" class="menu-item" :class="{ active: route.path === '/dashboard' }">
           <LayoutGrid :size="18" />
           Dashboard
-        </a>
+        </router-link>
 
-        <a href="#" class="menu-item">
+        <router-link to="/alunos" class="menu-item" :class="{ active: route.path.startsWith('/alunos') }">
           <Users :size="18" />
           Alunos
-        </a>
+        </router-link>
 
-        <a href="#" class="menu-item">
+        <router-link to="/profissionais/cadastro" class="menu-item" :class="{ active: route.path.startsWith('/profissionais') }">
           <GraduationCap :size="18" />
           Profissionais
-        </a>
+        </router-link>
 
         <a href="#" class="menu-item">
           <CalendarDays :size="18" />
@@ -86,10 +90,10 @@ onMounted(() => {
           Avaliações
         </a>
 
-        <a href="#" class="menu-item">
+        <router-link to="/mensalidades" class="menu-item" :class="{ active: route.path.startsWith('/mensalidades') }">
           <CreditCard :size="18" />
           Mensalidades
-        </a>
+        </router-link>
 
         <a href="#" class="menu-item">
           <UserCheck :size="18" />
@@ -98,7 +102,7 @@ onMounted(() => {
 
       </nav>
 
-      <button class="logout-btn">
+      <button @click="logout" class="logout-btn">
         <LogOut :size="18" />
         Sair
       </button>
@@ -116,7 +120,7 @@ onMounted(() => {
       <!-- Cards -->
       <section class="metrics-grid">
 
-        <div class="metric-card">
+        <div class="metric-card clickable" @click="router.push('/alunos')">
 
           <div>
             <span class="label">
@@ -124,6 +128,7 @@ onMounted(() => {
             </span>
 
             <h2>{{ totalAlunos }}</h2>
+            <small>Ver lista de alunos</small>
           </div>
 
           <div class="metric-icon blue">
@@ -148,7 +153,7 @@ onMounted(() => {
 
         </div>
 
-        <div class="metric-card">
+        <div class="metric-card clickable" @click="router.push('/mensalidades')">
 
           <div>
             <span class="label">
@@ -156,6 +161,7 @@ onMounted(() => {
             </span>
 
             <h2>{{ mensalidadesPendentes }}</h2>
+            <small>Ir para mensalidades</small>
           </div>
 
           <div class="metric-icon red">
@@ -324,15 +330,19 @@ onMounted(() => {
   align-items: center;
 }
 
-.metric-card h2 {
-  margin-top: 10px;
-  font-size: 2rem;
-  color: #0f172a;
+.metric-card.clickable {
+  cursor: pointer;
 }
 
-.label {
+.metric-card.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.metric-card small {
+  display: block;
+  margin-top: 6px;
   color: #64748b;
-  font-size: 0.9rem;
 }
 
 .metric-icon {

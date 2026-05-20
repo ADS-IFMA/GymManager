@@ -3,11 +3,12 @@ import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import AlunosView from "../views/AlunosView.vue";
 import ProfissionalCadastroView from "../views/ProfissionalCadastroView.vue";
+import MensalidadeView from "../views/MensalidadeView.vue";
 
 const routes = [
   {
     path: "/",
-    redirect: "/dashboard",
+    redirect: "/login",
   },
   {
     path: "/login",
@@ -25,6 +26,12 @@ const routes = [
     path: "/alunos",
     name: "alunos",
     component: AlunosView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/mensalidades",
+    name: "mensalidades",
+    component: MensalidadeView,
     meta: { requiresAuth: true },
   },
   {
