@@ -1,8 +1,8 @@
 <script setup>
-import AlunoCadastro from "./views/AlunoCadastro.vue";
-import MensalidadeView from "./views/MensalidadeView.vue";
+import AlunoCadastro from './views/AlunoCadastro.vue';
 </script>
 
 <template>
-  <router-view />
+  <AlunoCadastro />
 </template>
+

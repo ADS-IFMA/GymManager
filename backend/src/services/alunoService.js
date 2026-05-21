@@ -57,17 +57,6 @@ class AlunoService {
       client.release();
     }
   }
-
-  async listar() {
-    const query = `
-      SELECT id, nome, email, ativo, criado_at
-      FROM usuarios
-      WHERE perfil = 'ALUNO'
-      ORDER BY nome ASC
-    `;
-    const { rows } = await db.query(query);
-    return rows;
-  }
 }
 
 export default new AlunoService();
