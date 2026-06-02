@@ -249,7 +249,7 @@ const logout = () => {
         <div class="card">
           <div class="card-header success">
             <CheckCircle :size="24" class="header-icon" />
-            <h2>Confirmar Check-in</h2>
+            <h2>Confirmar Entrada</h2>
           </div>
 
           <div class="confirmation-content">
@@ -259,7 +259,11 @@ const logout = () => {
               </div>
               <div class="details-text">
                 <h3>{{ alunoSelecionado.nome }}</h3>
-                <p class="sub-info">ID: {{ alunoSelecionado.id }} • {{ alunoSelecionado.email }}</p>
+                <div class="mt-1.5 flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                  <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-700/10">ID: {{ alunoSelecionado.id }}</span>
+                  <span class="text-gray-300">•</span>
+                  <span class="font-medium text-gray-500">{{ alunoSelecionado.email }}</span>
+                </div>
               </div>
             </div>
 
@@ -269,7 +273,7 @@ const logout = () => {
                 :disabled="carregandoCheckin"
                 class="btn-confirm"
               >
-                {{ carregandoCheckin ? 'Registrando...' : 'Confirmar Check-in' }}
+                {{ carregandoCheckin ? 'Registrando...' : 'Confirmar Entrada' }}
               </button>
               <button @click="limparSeleção" class="btn-cancel">
                 Cancelar
@@ -284,7 +288,7 @@ const logout = () => {
         <div class="card">
           <div class="card-header">
             <Clock :size="24" class="header-icon" />
-            <h2>Histórico de Check-ins</h2>
+            <h2>Histórico Recente</h2>
           </div>
 
           <div v-if="historicoCheckins.length === 0" class="empty-history">
@@ -296,20 +300,17 @@ const logout = () => {
               <colgroup>
                 <col class="checkin-col-id" />
                 <col class="checkin-col-date" />
-                <col class="checkin-col-created" />
               </colgroup>
               <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Data e Hora</th>
-                  <th scope="col">Criado em</th>
+                <tr class="bg-gray-50 border-b border-gray-200">
+                  <th scope="col" class="w-[25%] px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">ID</th>
+                  <th scope="col" class="w-[75%] px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Horário de Entrada</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="checkin in historicoCheckins" :key="checkin.id">
+              <tbody class="bg-white divide-y divide-gray-100">
+                <tr v-for="checkin in historicoCheckins" :key="checkin.id" class="hover:bg-gray-50 transition-colors">
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">{{ checkin.id }}</td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-normal text-gray-600">{{ formatarDataHora(checkin.data_hora) }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-normal text-gray-600">{{ formatarDataHora(checkin.criado_em) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -646,10 +647,35 @@ const logout = () => {
   margin: 4px 0;
 }
 
-.details-text .sub-info {
-  color: #94a3b8;
-  font-size: 0.9rem;
-  margin: 0;
+.details-text > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.details-text > div span:first-child {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.1);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.details-text > div span:nth-child(2) {
+  color: #d1d5db;
+}
+
+.details-text > div span:last-child {
+  color: #6b7280;
+  font-weight: 500;
 }
 
 .button-group {
@@ -725,15 +751,11 @@ const logout = () => {
 }
 
 .checkin-history-table .checkin-col-id {
-  width: 15%;
+  width: 25%;
 }
 
 .checkin-history-table .checkin-col-date {
-  width: 42%;
-}
-
-.checkin-history-table .checkin-col-created {
-  width: 43%;
+  width: 75%;
 }
 
 .checkin-history-table thead tr {
