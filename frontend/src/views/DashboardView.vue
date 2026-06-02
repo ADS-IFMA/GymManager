@@ -95,10 +95,10 @@ onMounted(() => {
           Mensalidades
         </router-link>
 
-        <a href="#" class="menu-item">
+        <router-link to="/checkin" class="menu-item" :class="{ active: route.path === '/checkin' }">
           <UserCheck :size="18" />
           Check-in
-        </a>
+        </router-link>
 
       </nav>
 

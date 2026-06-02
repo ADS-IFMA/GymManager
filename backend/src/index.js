@@ -6,6 +6,7 @@ import alunoRoutes from './routes/alunoRoutes.js';
 import profissionalRoutes from './routes/profissionalRoutes.js';
 import atividadeRoutes from './routes/atividadeRoutes.js';
 import mensalidadeRoutes from './routes/mensalidadeRoutes.js';
+import checkinRoutes from './routes/checkinRoutes.js';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use('/api', alunoRoutes);
 app.use('/api', profissionalRoutes);
 app.use('/api', atividadeRoutes);
 app.use('/api', mensalidadeRoutes);
+app.use('/api', checkinRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
@@ -26,4 +28,5 @@ app.listen(PORT, () => {
   console.log(`🔗 Endpoint de profissionais: http://localhost:${PORT}/api/profissionais`);
   console.log(`🔗 Endpoint de atividades: http://localhost:${PORT}/api/atividades`);
   console.log(`🔗 Endpoint de mensalidades: http://localhost:${PORT}/api/mensalidades`);
+  console.log(`🔗 Endpoint de check-ins: http://localhost:${PORT}/api/checkins`);
 });
