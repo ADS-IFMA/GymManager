@@ -13,7 +13,7 @@ const erro = ref('');
 const mensagem = ref('');
 const atividadesExpandidas = ref(new Set());
 const inscritosPorAtividade = ref({});
-const idAlunoLogado = ref(1);
+const idAlunoLogado = ref(3); // ID do Aluno 1 (use 3, 4 ou 5 para testar)
 
 const formatarData = (dataStr) => {
   const data = new Date(dataStr);
@@ -124,6 +124,17 @@ onMounted(() => {
 
       <div v-if="!carregando && atividades.length === 0" class="empty-state">
         <p>Nenhuma atividade disponível no momento.</p>
+      </div>
+
+      <div class="aluno-selector" v-if="!carregando && atividades.length > 0">
+        <label>
+          Aluno Logado:
+          <select v-model.number="idAlunoLogado">
+            <option value="3">Aluno 1 (ID: 3)</option>
+            <option value="4">Aluno 2 (ID: 4)</option>
+            <option value="5">Aluno 3 (ID: 5)</option>
+          </select>
+        </label>
       </div>
 
       <div v-if="!carregando && atividades.length > 0" class="atividades-grid">
@@ -273,6 +284,32 @@ onMounted(() => {
   border-radius: 24px;
   font-size: 1.1rem;
   opacity: 0.8;
+}
+
+.aluno-selector {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 24px;
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.aluno-selector label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.aluno-selector select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: #0f172a;
+  color: #f8fafc;
+  cursor: pointer;
+  font-size: 0.95rem;
 }
 
 .atividades-grid {
