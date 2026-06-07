@@ -39,12 +39,15 @@ CREATE TABLE IF NOT EXISTS alunos (
     status_matricula BOOLEAN DEFAULT TRUE
 );
 
--- 3. Tabela de Atividades
+-- 3. Tabela de Atividades (Atualizada para suportar agendamento)
 CREATE TABLE IF NOT EXISTS atividades (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    descricao VARCHAR(255),
-    vagas INTEGER NOT NULL
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    data_hora TIMESTAMP NOT NULL,
+    limite_vagas INT NOT NULL CHECK (limite_vagas > 0),
+    id_profissional INT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 4. Tabela de Agendamentos
@@ -94,3 +97,17 @@ CREATE TABLE IF NOT EXISTS mensalidades (
     data_vesc DATE NOT NULL,
     status_pagamento BOOLEAN DEFAULT FALSE
 );
+
+-- 9. Tabela de Inscrições em Atividades (Nova)
+CREATE TABLE IF NOT EXISTS inscricoes (
+    id SERIAL PRIMARY KEY,
+    id_aluno INT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+    id_atividade INT NOT NULL REFERENCES atividades(id) ON DELETE CASCADE,
+    data_inscricao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(id_aluno, id_atividade)
+);
+
+-- Índices para melhor performance
+CREATE INDEX IF NOT EXISTS idx_atividades_profissional ON atividades(id_profissional);
+CREATE INDEX IF NOT EXISTS idx_inscricoes_atividade ON inscricoes(id_atividade);
+CREATE INDEX IF NOT EXISTS idx_inscricoes_aluno ON inscricoes(id_aluno);
