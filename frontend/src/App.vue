@@ -1,8 +1,8 @@
 <script setup>
-import AlunoCadastro from './views/AlunoCadastro.vue';
+import AgendamentoAtividades from './views/AgendamentoAtividades.vue';
 </script>
 
 <template>
-  <AlunoCadastro />
+  <AgendamentoAtividades />
 </template>
 
