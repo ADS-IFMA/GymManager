@@ -1,8 +1,10 @@
-<script setup>
-import AgendamentoAtividades from './views/AgendamentoAtividades.vue';
+<script>
+export default {
+  name: 'App'
+}
 </script>
 
 <template>
-  <AgendamentoAtividades />
+  <router-view />
 </template>
 
