@@ -63,6 +63,11 @@ class Usuario {
     if (!rows[0]) return null;
     return new Usuario(rows[0]);
   }
+
+  static async atualizarSenha(id, senhaHash) {
+    const query = 'UPDATE usuarios SET senha = $1 WHERE id = $2';
+    await pool.query(query, [senhaHash, id]);
+  }
 }
 
 export default Usuario;

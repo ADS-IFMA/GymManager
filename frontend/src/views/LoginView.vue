@@ -74,10 +74,7 @@ export default defineComponent({
         const response = await authService.login(this.email, this.senha);
         this.successMessage = 'Login realizado com sucesso!';
         
-        // Redirecionar para dashboard após 1 segundo
-        setTimeout(() => {
-          this.$router.push('/dashboard');
-        }, 1000);
+        this.$router.replace('/dashboard');
       } catch (error) {
         this.errorMessage = error.message || 'Erro ao fazer login. Verifique suas credenciais.';
         console.error('Erro no login:', error);
