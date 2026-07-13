@@ -4,7 +4,6 @@ import DashboardView from "../views/DashboardView.vue";
 import AlunosView from "../views/AlunosView.vue";
 import ProfissionalCadastroView from "../views/ProfissionalCadastroView.vue";
 import MensalidadeView from "../views/MensalidadeView.vue";
-import CheckinView from "../views/CheckinView.vue";
 
 const routes = [
   {
@@ -29,6 +28,14 @@ const routes = [
     component: AlunosView,
     meta: { requiresAuth: true },
   },
+
+  {
+    path: "/alunos/cadastro",
+    name: "aluno-cadastro",
+    component: AlunoCadastro,
+    meta: { requiresAuth: true },
+  },
+
   {
     path: "/mensalidades",
     name: "mensalidades",
