@@ -5,16 +5,16 @@ CREATE TABLE IF NOT EXISTS usuarios (
     senha VARCHAR(255) NOT NULL,
     perfil VARCHAR(20) NOT NULL CHECK (perfil IN ('ADMIN', 'PROFISSIONAL', 'ALUNO')),
     ativo BOOLEAN DEFAULT TRUE,
-    tipo_usuario VARCHAR(50),
     data_nasc DATE,           
     telefone VARCHAR(100),     
     criado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     atualizado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
-INSERT INTO usuarios (nome, email, senha, perfil, ativo, tipo_usuario, data_nasc, telefone)
-VALUES ('Administrador Master', 'admin@gymmanager.com', 'senha_provisoria', 'ADMIN', true, 'ADMIN', '2000-01-01', '98999999999')
+-- Inserir um Admin padrão para testes (Senha: admin123 - Exemplo)
+-- Nota: Em produção, a senha deve ser criptografada via Bcrypt no Node.js
+INSERT INTO usuarios (nome, email, senha, perfil, data_nasc, telefone)
+VALUES ('Administrador Master', 'admin@gymmanager.com', 'senha_provisoria', 'ADMIN', '2000-01-01', '98999999999')
 ON CONFLICT (email) DO NOTHING;
 
 
@@ -70,9 +70,9 @@ CREATE TABLE IF NOT EXISTS avaliacoes_fisicas (
 
 CREATE TABLE IF NOT EXISTS checkins (
     id SERIAL PRIMARY KEY,
-    id_aluno INTEGER REFERENCES alunos(id_usuario),
-    data_horat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(50)
+    id_aluno INTEGER REFERENCES usuarios(id),
+    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS mensalidades (

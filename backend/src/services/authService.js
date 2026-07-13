@@ -4,7 +4,7 @@ import Usuario from '../models/Usuario.js';
 
 class AuthService {
   async autenticar(email, senha) {
-    const usuario = await Usuario.buscarPorEmail(email.trim());
+    const usuario = await Usuario.buscarPorEmail(email.trim().toLowerCase());
 
     if (!usuario) {
       throw new Error('Credenciais inválidas.');
@@ -25,11 +25,12 @@ class AuthService {
       'gymmanager_secret_2026',
       { expiresIn: '8h' }
     );
+
     return {
       token,
-      usuario: usuario.toJSON()
+      usuario: usuario.toJSON(),
     };
   }
 }
 
-export default new AuthService(); 
+export default new AuthService();
