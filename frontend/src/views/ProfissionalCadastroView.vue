@@ -1,4 +1,5 @@
 <template>
+
   <div class="main-container">
     <div class="cadastro-profissional">
       <h2>Cadastro de Profissional</h2>
@@ -35,7 +36,9 @@
         <button type="submit" class="btn-primary" :disabled="carregando">
           {{ carregando ? 'Cadastrando...' : 'Cadastrar Profissional' }}
         </button>
+        
       </form>
+      <router-link to="/dashboard" class="btn-voltar"> ← Voltar </router-link>
     </div>
   </div>
 </template>

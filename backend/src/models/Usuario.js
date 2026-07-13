@@ -8,7 +8,6 @@ class Usuario {
     senha,
     perfil,
     ativo,
-    tipo_usuario,
     data_nasc,
     telefone,
     criado_at,
@@ -20,7 +19,6 @@ class Usuario {
     this.senha = senha;
     this.perfil = perfil;
     this.ativo = ativo;
-    this.tipo_usuario = tipo_usuario;
     this.data_nasc = data_nasc;
     this.telefone = telefone;
     this.criado_at = criado_at;
@@ -37,16 +35,16 @@ class Usuario {
     nome,
     email,
     senha,
-    tipo_usuario,
+    perfil,
     data_nasc,
     telefone,
   }) {
     const query = `
-      INSERT INTO usuarios (nome, email, senha, tipo_usuario, data_nasc, telefone)
+      INSERT INTO usuarios (nome, email, senha, perfil, data_nasc, telefone)
       VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id, nome, email, tipo_usuario, criado_at;
+      RETURNING id, nome, email, perfil, criado_at;
     `;
-    const values = [nome, email, senha, tipo_usuario, data_nasc, telefone];
+    const values = [nome, email, senha, perfil, data_nasc, telefone];
 
     try {
       const { rows } = await pool.query(query, values);
