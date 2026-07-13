@@ -42,6 +42,13 @@ Desenvolver um sistema web completo para gestão administrativa, técnica e fina
 
 ---
 
+## Protótipo (MVP)
+
+- Protótipo com funcionalidades MVP feito no Figma
+- Link do Protótipo: https://cyan-swim-41291090.figma.site
+
+---
+
 ## Estrutura do Projeto
 
 ### Backend (Node.js)
