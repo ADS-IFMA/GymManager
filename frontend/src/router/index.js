@@ -2,8 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import AlunosView from "../views/AlunosView.vue";
+import AlunoCadastro from "../views/AlunoCadastro.vue";
 import ProfissionalCadastroView from "../views/ProfissionalCadastroView.vue";
 import MensalidadeView from "../views/MensalidadeView.vue";
+import CheckinView from "../views/CheckinView.vue";
 
 const routes = [
   {
