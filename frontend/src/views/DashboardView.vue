@@ -33,8 +33,9 @@ const carregarDashboard = async () => {
     const respostaProfissionais = await axios.get('http://localhost:3000/api/profissionais')
     totalProfissionais.value = respostaProfissionais.data.length
 
-    const respostaMensalidades = await axios.get('http://localhost:3000/api/mensalidades')
-    mensalidadesPendentes.value = respostaMensalidades.data.filter(m => m.paga === false).length
+    // const respostaMensalidades = await axios.get('http://localhost:3000/api/mensalidades')
+   // mensalidadesPendentes.value = respostaMensalidades.data.filter(m => m.paga === false).length
+   mensalidadesPendentes.value = 0;
   } catch (error) {
     console.error('Erro ao carregar dashboard:', error)
   }
@@ -73,6 +74,10 @@ onMounted(() => {
         <router-link to="/alunos" class="menu-item" :class="{ active: route.path.startsWith('/alunos') }">
           <Users :size="18" />
           Alunos
+        </router-link>
+
+        <router-link to="/alunos/cadastro"  class="menu-item" :class="{ active: route.path === '/alunos/cadastro' }" >          <Users :size="18" />
+          Cadastrar Aluno
         </router-link>
 
         <router-link to="/profissionais/cadastro" class="menu-item" :class="{ active: route.path.startsWith('/profissionais') }">
@@ -424,4 +429,27 @@ td {
   padding: 0 !important;
 }
 
+@media (max-width: 768px) {
+
+  .dashboard-layout{
+    flex-direction: column;
+  }
+
+  .sidebar{
+    width:100%;
+    border-right:none;
+    border-bottom:1px solid #e2e8f0;
+  }
+
+  .content{
+    padding:20px;
+  }
+
+  .metrics-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
 </style>
+
