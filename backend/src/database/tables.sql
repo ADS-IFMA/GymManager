@@ -80,9 +80,9 @@ CREATE TABLE IF NOT EXISTS avaliacoes_fisicas (
 -- 7. Tabela de Check-ins
 CREATE TABLE IF NOT EXISTS checkins (
     id SERIAL PRIMARY KEY,
-    id_aluno INTEGER REFERENCES alunos(id_usuario),
-    data_horat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(50)
+    id_aluno INTEGER REFERENCES usuarios(id),
+    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 8. Tabela de Mensalidades

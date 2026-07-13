@@ -185,7 +185,7 @@ const labelStatus = (status) => {
         <a href="#" class="menu-item"><CalendarDays :size="18" /> Agendamentos</a>
         <a href="#" class="menu-item"><LineChart :size="18" /> Avaliações Físicas</a>
         <router-link to="/mensalidades" class="menu-item" :class="{ active: route.path.startsWith('/mensalidades') }"><CreditCard :size="18" /> Mensalidades</router-link>
-        <a href="#" class="menu-item"><UserCheck :size="18" /> Check-in</a>
+        <router-link to="/checkin" class="menu-item" :class="{ active: route.path === '/checkin' }"><UserCheck :size="18" /> Check-in</router-link>
       </nav>
 
       <button class="logout-btn">
