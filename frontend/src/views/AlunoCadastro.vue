@@ -38,8 +38,6 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-
-
   <main class="app-container">
     <section class="card">
       <h1>Cadastro de Aluno</h1>
@@ -66,13 +64,8 @@ const handleSubmit = async () => {
 
       <p class="success-message" v-if="mensagem">{{ mensagem }}</p>
       <p class="error-message" v-if="erro">{{ erro }}</p>
-      
-      <router-link to="/dashboard" class="btn-voltar"> ← Voltar </router-link>
     </section>
-    
   </main>
-  
-  
 </template>
 
 <style scoped>

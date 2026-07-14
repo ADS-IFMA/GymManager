@@ -1,5 +1,4 @@
 import atividadeService from '../services/atividadeService.js';
-<<<<<<< HEAD
 import inscricaoService from '../services/inscricaoService.js';
 
 export const criarAtividade = async (req, res) => {
@@ -8,44 +7,20 @@ export const criarAtividade = async (req, res) => {
     res.status(201).json(atividade);
   } catch (error) {
     console.error('Erro ao criar atividade:', error.message);
-=======
-
-export const criarAtividade = async (req, res) => {
-  try {
-    const atividade = await atividadeService.criarAtividade(req.body);
-    res.status(201).json(atividade);
-  } catch (error) {
->>>>>>> origin/develop
     res.status(400).json({ erro: error.message });
   }
 };
 
 export const listarAtividades = async (req, res) => {
   try {
-<<<<<<< HEAD
     const atividades = await atividadeService.listar();
     res.status(200).json(atividades);
   } catch (error) {
     console.error('Erro ao listar atividades:', error.message);
-=======
-    const atividades = await atividadeService.listarAtividades();
-    res.status(200).json(atividades);
-  } catch (error) {
-    res.status(500).json({ erro: 'Erro interno ao listar atividades.' });
-  }
-};
-
-export const criarAgendamento = async (req, res) => {
-  try {
-    const agendamento = await atividadeService.criarAgendamento(req.body);
-    res.status(201).json(agendamento);
-  } catch (error) {
->>>>>>> origin/develop
     res.status(400).json({ erro: error.message });
   }
 };
 
-<<<<<<< HEAD
 export const buscarAtividade = async (req, res) => {
   try {
     const { id } = req.params;
@@ -106,14 +81,3 @@ export const listarInscritos = async (req, res) => {
     res.status(404).json({ erro: error.message });
   }
 };
-=======
-export const listarAgendamentosDoAluno = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const agendamentos = await atividadeService.listarAgendamentosDoAluno(id);
-    res.status(200).json(agendamentos);
-  } catch (error) {
-    res.status(400).json({ erro: error.message });
-  }
-};
->>>>>>> origin/develop

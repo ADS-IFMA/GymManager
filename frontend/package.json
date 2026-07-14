@@ -9,11 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
-=======
-    "axios": "^1.16.1",
-    "lucide-vue-next": "^1.0.0",
->>>>>>> origin/develop
     "vue": "^3.5.30",
     "vue-router": "^5.1.0"
   },
