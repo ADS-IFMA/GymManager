@@ -3,6 +3,7 @@ import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import AlunosView from "../views/AlunosView.vue";
 import AlunoCadastro from "../views/AlunoCadastro.vue";
+import ProfissionaisView from "../views/ProfissionaisView.vue";
 import ProfissionalCadastroView from "../views/ProfissionalCadastroView.vue";
 import MensalidadeView from "../views/MensalidadeView.vue";
 import CheckinView from "../views/CheckinView.vue";
@@ -42,6 +43,12 @@ const routes = [
     path: "/mensalidades",
     name: "mensalidades",
     component: MensalidadeView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/profissionais",
+    name: "profissionais",
+    component: ProfissionaisView,
     meta: { requiresAuth: true },
   },
   {

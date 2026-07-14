@@ -45,7 +45,7 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { cadastrarProfissionalAPI } from '../services/profissionalService';
+import { cadastrarProfissionalAPI } from '../services/profissionalService.js';
 
 const form = reactive({
   nome: '',
