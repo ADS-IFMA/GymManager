@@ -3,6 +3,18 @@ import db from '../database/db.js';
 import Usuario from '../models/Usuario.js';
 
 class AlunoService {
+  async listar() {
+    const query = `
+      SELECT u.id, u.nome, u.email, u.perfil, u.ativo
+      FROM usuarios u
+      INNER JOIN alunos a ON a.id_usuario = u.id
+      ORDER BY u.id DESC
+    `;
+
+    const { rows } = await db.query(query);
+    return rows;
+  }
+
   async cadastrar({ nome, email, senha }) {
     if (!nome || !email || !senha) {
       throw new Error('Nome, email e senha são obrigatórios para o cadastro.');

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { atualizarStatusMensalidade, getMensalidadesPorAluno } from '../services/mensalidadeService.js';
 import { listarAlunos } from '../services/alunoService.js';
 import { Dumbbell, LayoutGrid, Users, GraduationCap, CalendarDays, LineChart, CreditCard, UserCheck, LogOut } from 'lucide-vue-next';
@@ -18,6 +18,7 @@ const toast = ref({ exibir: false, mensagem: '', tipo: 'success' });
 let toastTimer = null;
 
 const route = useRoute();
+const router = useRouter();
 
 const exibirToast = (mensagem, tipo = 'success') => {
   if (toastTimer) clearTimeout(toastTimer);
@@ -159,6 +160,12 @@ const labelStatus = (status) => {
   const mapa = { PAGO: 'Pago', PENDENTE: 'Pendente', VENCIDO: 'Atrasado', SEM_REGISTRO: 'Sem registro' };
   return mapa[status] || status;
 };
+
+const logout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('usuario');
+  router.push('/login');
+};
 </script>
 
 <template>
@@ -188,7 +195,7 @@ const labelStatus = (status) => {
         <router-link to="/checkin" class="menu-item" :class="{ active: route.path === '/checkin' }"><UserCheck :size="18" /> Check-in</router-link>
       </nav>
 
-      <button class="logout-btn">
+      <button class="logout-btn" @click="logout">
         <LogOut :size="18" /> Sair
       </button>
     </aside>

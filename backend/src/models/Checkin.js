@@ -4,23 +4,24 @@ class Checkin {
   constructor({
     id,
     id_aluno,
-    data_hora,
+    data_horat,
     criado_em,
+    data_hora,
   } = {}) {
     this.id = id;
     this.id_aluno = id_aluno;
-    this.data_hora = data_hora;
+    this.data_hora = data_hora || data_horat;
     this.criado_em = criado_em;
   }
 
   // Método para registrar um novo check-in no banco
   static async create({ id_aluno }) {
     const query = `
-      INSERT INTO checkins (id_aluno, data_hora, criado_em)
-      VALUES ($1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-      RETURNING id, id_aluno, data_hora, criado_em;
+      INSERT INTO checkins (id_aluno, data_horat, status)
+      VALUES ($1, CURRENT_TIMESTAMP, $2)
+      RETURNING id, id_aluno, data_horat, status;
     `;
-    const values = [id_aluno];
+    const values = [id_aluno, 'PRESENTE'];
 
     try {
       const { rows } = await pool.query(query, values);
@@ -33,10 +34,10 @@ class Checkin {
   // Método para listar todos os check-ins de um aluno
   static async buscarPorAluno(id_aluno) {
     const query = `
-      SELECT id, id_aluno, data_hora, criado_em
+      SELECT id, id_aluno, data_horat, status
       FROM checkins
       WHERE id_aluno = $1
-      ORDER BY data_hora DESC;
+      ORDER BY data_horat DESC;
     `;
     const values = [id_aluno];
 

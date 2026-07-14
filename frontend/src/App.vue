@@ -1,11 +1,8 @@
 <script setup>
-<<<<<<< HEAD
-import AgendamentoAtividades from './views/AgendamentoAtividades.vue';
-=======
->>>>>>> origin/develop
+import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <AgendamentoAtividades />
+  <RouterView />
 </template>
 
